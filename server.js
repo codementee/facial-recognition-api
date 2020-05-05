@@ -40,6 +40,18 @@ app.post('/signin', (req, res) => {
     // }
 })
 
+app.post('/register', (req, res) => {
+    const { email, password, name} = req.body;
+    database.users.push({
+            id: '124',
+            name: name, 
+            email: email,
+            password: password,
+            entries: 0,
+            joined: new Date()  
+    })
+    res.json(database.users[database.users.length-1])
+})
 
 
 app.listen(3000, () => {
