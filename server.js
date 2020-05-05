@@ -1,10 +1,46 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+
+
 
 const app = express();
+app.use(bodyParser.json());
+const database = {
+    users: [
+        {
+            id: '123',
+            name: 'John', 
+            email: 'john@gmail.com',
+            password: '321',
+            entries: 0,
+            joined: new Date()
+        },
+        {
+            id: '1234',
+            name: 'Bilal', 
+            email: 'Bilal@gmail.com',
+            password: '123',
+            entries: 0,
+            joined: new Date()
+        }
+    ]
+}
 
 app.get('/', (req, res) => {
-    res.send("This is working")
+    res.send(database.users)
 })
+
+app.post('/signin', (req, res) => {
+    // for(let i = 0; i < database.users.length; i++) {
+        if(req.body.email === database.users[i].email && req.body.password === database.users[i].password){
+            res.json('still success')
+        } else {
+            res.status(400).json('error logging in');
+        }
+    // }
+})
+
+
 
 app.listen(3000, () => {
     console.log('app is running on 3000')
@@ -12,9 +48,12 @@ app.listen(3000, () => {
 
 
 /*
-res = this is working
-signin = POST = success/fail
-register = POST = user
-profile/:userId  = GET = user
-image end point --> PUT --> user    
+
+
+
+res --> this is working
+signin --> POST = success/fail
+register --> POST = user
+profile/:userId  --> GET <-- user
+image end point --> PUT  <-- user    
 */
