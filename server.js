@@ -1,14 +1,18 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt-nodejs');
+const cors = require('cors');
 
 const app = express();
+
 app.use(bodyParser.json());
+app.use(cors())
 const database = {
     users: [
         {
             id: '123',
             name: 'John', 
+       		password: '123',
             email: 'john@gmail.com',
             entries: 0,
             joined: new Date()
@@ -16,6 +20,7 @@ const database = {
         {
             id: '1234',
             name: 'Bilal', 
+            password: '1234',
             email: 'Bilal@gmail.com',
             entries: 0,
             joined: new Date()
@@ -31,17 +36,18 @@ const database = {
 }
 
 app.get('/', (req, res) => {
+	console.log(database.users)
     res.send(database.users)
 })
 
 app.post('/signin', (req, res) => {
-    // for(let i = 0; i < database.users.length; i++) {
-        if(req.body.email === database.users[i].email && req.body.password === database.users[i].password){
-            res.json('still success')
+    for(let i = 0; i < database.users.length; i++) {
+        if(req.body.email.toLowerCase() === database.users[i].email.toLowerCase() && req.body.password === database.users[i].password){
+            res.json('success')
         } else {
             res.status(400).json('error logging in');
         }
-    // }
+    }
 })
 
 app.post('/register', (req, res) => {
@@ -89,16 +95,16 @@ app.put('/image', (req, res) => {
 
 
 bcrypt.hash("bacon", null, null, function(err, hash) {
-    // Store hash in your password DB.
+    // console.log(hash)
 });
 
-// Load hash from your password DB.
-bcrypt.compare("bacon", hash, function(err, res) {
-    // res == true
-});
-bcrypt.compare("veggies", hash, function(err, res) {
-    // res = false
-});
+// // Load hash from your password DB.
+// bcrypt.compare("bacon", hash, function(err, res) {
+//     // res == true
+// });
+// bcrypt.compare("veggies", hash, function(err, res) {
+//     // res = false
+// });
 
 app.listen(3000, () => {
     console.log('app is running on 3000')
