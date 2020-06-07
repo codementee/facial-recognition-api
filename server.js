@@ -6,7 +6,7 @@ const cors = require('cors');
 const app = express();
 
 app.use(bodyParser.json());
-app.use(cors())
+app.use(cors());
 const database = {
     users: [
         {
@@ -25,13 +25,6 @@ const database = {
             entries: 0,
             joined: new Date()
         }
-    ], 
-    login: [
-        {
-            id: '321',
-            hash: '',
-            email: 'john@gmail.com'
-        }
     ]
 }
 
@@ -41,13 +34,14 @@ app.get('/', (req, res) => {
 })
 
 app.post('/signin', (req, res) => {
-    for(let i = 0; i < database.users.length; i++) {
-        if(req.body.email.toLowerCase() === database.users[i].email.toLowerCase() && req.body.password === database.users[i].password){
-            res.json('success')
+    // for(let i = 0; i < database.users.length; i++) {
+        if(req.body.email.toLowerCase() === database.users[0].email.toLowerCase() &&
+         req.body.password === database.users[0].password){
+            res.json(database.users[0])
         } else {
             res.status(400).json('error logging in');
         }
-    }
+    // }
 })
 
 app.post('/register', (req, res) => {
@@ -63,7 +57,7 @@ app.post('/register', (req, res) => {
 })
 
 app.get('/profile/:id', (req, res) => {
-    const {id} = req.params;
+    const { id } = req.params;
     let found = false;
     database.users.forEach((user) => {
         if(user.id === id) {
@@ -79,6 +73,7 @@ app.get('/profile/:id', (req, res) => {
 
 app.put('/image', (req, res) => {
     const {id} = req.body;
+    // console.log(id)
     let found = false;
     database.users.forEach((user) => {
         if(user.id === id) {
