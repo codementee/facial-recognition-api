@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const cors = require('cors');
 const knex = require('knex');
 const pg = require('pg');
+const { response } = require('express');
 
 const db = knex({
     client: 'pg',
@@ -15,6 +16,8 @@ const db = knex({
     }
   });
 
+
+
 //   db.select('*').from ('users').then(data => {
 //     // console.log(data);
 // });
@@ -25,68 +28,56 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-const database = {
-    users: [
-        {
-            id: '123',
-            name: 'John', 
-       		password: '123',
-            email: 'john@gmail.com',
-            entries: 0,
-            joined: new Date()
-        },
-        {
-            id: '1234',
-            name: 'Bilal', 
-            password: '1234',
-            email: 'Bilal@gmail.com',
-            entries: 0,
-            joined: new Date()
-        }
-    ]
-}
-
 app.get('/', (req, res) => {
 	console.log(database.users)
     res.send(database.users)
 })
 
 app.post('/signin', (req, res) => {
+    db.select('email', 'hash').from('login').where('email', '=', req.body.email)
 
-    // for(let i = 0; i < database.users.length; i++) {
-        if(req.body.email.toLowerCase() === database.users[0].email.toLowerCase() &&
-         req.body.password === database.users[0].password){
-            res.json(database.users[0])
+    .then(data => {
+        const isValid = bcrypt.compareSync(req.body.password, data[0].hash); // true
+        if(isValid) {
+            return db.select('*').from('users').where('email', '=', req.body.email)
+            .then(user => {
+                res.json(user[0])
+            })
+            .catch(err => res.status(400).json('unable to get user'))
         } else {
-            res.status(400).json('error logging in');
+            res.status(400).json('wrong credentials');
         }
-    // }
+    })
+    .catch(err => res.status(400).json('wrong credentials'))
 })
 
 app.post('/register', (req, res) => {
     const { email, password, name} = req.body;
-    const hash = bcrypt.hashSync(password);
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(password, salt);
     db.transaction(trx => {
         trx.insert({
             hash: hash,
             email: email
         })
         .into('login')
-        .returning('emial')
+        .returning('email')
         .then(loginEmail => {
-            return db('users')
+            return trx('users')
             .returning('*')
             .insert({
-            email: email,
+            email: loginEmail[0],
             name: name, 
             joined: new Date()
             })
+            .then(user => {
+                res.json(user[0])
+            })
         })
-    })    
-    .then(user => {
-        res.json(user[0])
+        .then(trx.commit)
+        .then(trx.rollback)
+        .catch(err => res.status(400).json('unable to register'))
     })
-    .catch(err => res.status(400).json('unable to register'))
 })
 
 app.get('/profile/:id', (req, res) => {
