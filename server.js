@@ -6,7 +6,7 @@ const knex = require('knex');
 const pg = require('pg');
 const { response } = require('express');
 
-const register = require('./controllers/register');
+const register = require('./cont  rollers/register');
 const signin = require('./controllers/signin');
 const profile = require('./controllers/get-profile');
 const image = require('./controllers/image');
