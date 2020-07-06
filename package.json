@@ -1,9 +1,8 @@
 {
   "name": "facial-recognition-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "Server for facial-recognition application",
   "main": "index.js",
- 
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -13,6 +12,18 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "knex": "^0.21.1",
-    "pg": "^8.2.1"
-  }
+    "pg": "^8.2.1",
+    "postgres": "^1.0.2"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codementee/facial-recognition-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/codementee/facial-recognition-api/issues"
+  },
+  "homepage": "https://github.com/codementee/facial-recognition-api#readme"
 }
