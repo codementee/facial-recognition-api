@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 const cors = require('cors');
 const knex = require('knex');
 const pg = require('pg');
@@ -27,10 +27,10 @@ app.use(cors());
 
 app.get('/', (req, res) => { res.send("It is working!") })
 
-app.post('/signin', (req, res) => {signin.handleSignin(req, res, db, bcrypt)})
+app.post('/signin', (req, res) => {signin.handleSignin(req, res, db)})
 
 // dependencies injection
-app.post('/register', (req, res) => { register.handleRegister(req, res, db, bcrypt) })
+app.post('/register', (req, res) => { register.handleRegister(req, res, db) })
 
 app.get('/profile/:id', (req, res) => {profile.handleProfile(req, res)})
 
