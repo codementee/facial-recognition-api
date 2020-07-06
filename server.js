@@ -15,9 +15,6 @@ const image = require('./controllers/image');
 const db = knex({
     client: 'pg',
     connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: true
-    }
   });
 
 // const db = knex({
