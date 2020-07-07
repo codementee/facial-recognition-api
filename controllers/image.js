@@ -12,7 +12,17 @@ const handleApiCall = (req, res) => {
     .catch(err => res.status(400).json('unable to work with API'))
 }
 
-const handleImage = (req, res, db) => {
+
+const knex = require('knex')
+const db = knex({
+  client: 'pg',
+  connection: {
+    connectionString: process.env.DATABASE_URL,
+    ssl: true
+  }
+});
+
+const handleImage = (req, res) => {
     const {id} = req.body;
     db('users').where('id', '=', id)
     .increment('entries', 1)

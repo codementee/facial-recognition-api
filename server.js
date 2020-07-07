@@ -2,8 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
 const cors = require('cors');
-const knex = require('knex');
-const pg = require('pg');
+// const knex = require('knex');
+// const pg = require('pg');
 
 // const { response } = require('express');
 
@@ -12,15 +12,15 @@ const signin = require('./controllers/signin');
 const profile = require('./controllers/get-profile');
 const image = require('./controllers/image');
 
-const db = knex({
-    client: 'pg',
-    connection: {
-      connectionString: process.env.DATABASE_URL,
-      ssl: {
-        rejectUnauthorized: false
-      }
-    }
-  });
+// const db = knex({
+//     client: 'pg',
+//     connection: {
+//       connectionString: process.env.DATABASE_URL,
+//       ssl: {
+//         rejectUnauthorized: false
+//       }
+//     }
+//   });
 // const db = knex({
 //   client: 'pg',
 //   connection: {
@@ -45,7 +45,7 @@ app.post('/register', (req, res) => { register.handleRegister(req, res, bcrypt) 
 
 app.get('/profile/:id', (req, res) => {profile.handleProfile(req, res)})
 
-app.put('/image', (req, res) => {image.handleImage(req, res, db)})
+app.put('/image', (req, res) => {image.handleImage(req, res)})
 
 app.post('/imageurl', (req, res) => {image.handleApiCall(req, res)})
 
