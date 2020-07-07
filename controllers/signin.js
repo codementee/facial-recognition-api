@@ -8,7 +8,7 @@ const db = knex({
   }
   });
 
-const handleSignin = (req, res, db, bcrypt) => {
+const handleSignin = (req, res, bcrypt) => {
 
     if(!req.body.email || !req.body.password) {
         return res.status(400).json('incorrect form submission')
