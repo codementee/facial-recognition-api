@@ -9,13 +9,13 @@ const db = knex({
   });
 
 
-const handleRegister = (req, res, db, bcrypt) => {
+const handleRegister = (req, res, bcrypt) => {
     const { email, password, name} = req.body;
     if(!email || !name || !password) {
             return res.status(400).json('incorrect form submission')
     }
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(password, salt);
+    const saltRounds = 10;
+    const hash = bcrypt.hashSync(password, saltRounds);
     db.transaction(trx => {
         trx.insert({
             hash: hash,
