@@ -1,3 +1,13 @@
+const knex = require('knex');
+
+const db = knex({
+    client: 'pg',
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: true
+    }
+  });
+
 const handleSignin = (req, res, db, bcrypt) => {
 
     if(!req.body.email || !req.body.password) {
