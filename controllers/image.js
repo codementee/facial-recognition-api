@@ -13,19 +13,10 @@ const handleApiCall = (req, res) => {
 }
 
 
-const knex = require('knex');
 
-const db = knex({
-    client: 'pg',
-    connection: {
-      connectionString: process.env.DATABASE_URL,
-      ssl: {
-        rejectUnauthorized: false
-      }
-    }
-  });
 
-const handleImage = (req, res) => {
+const handleImage = (req, res, db) => {
+    console.log(db)
     const {id} = req.body;
     db('users').where('id', '=', id)
     .increment('entries', 1)
