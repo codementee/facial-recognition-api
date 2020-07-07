@@ -16,12 +16,14 @@ const handleApiCall = (req, res) => {
 const knex = require('knex');
 
 const db = knex({
-  client: 'pg',
-  connection: {
-    connectionString: process.env.DATABASE_URL,
-    ssl: false
-  }
-});
+    client: 'pg',
+    connection: {
+      connectionString: process.env.DATABASE_URL,
+      ssl: {
+        rejectUnauthorized: false
+      }
+    }
+  });
 
 const handleImage = (req, res) => {
     const {id} = req.body;
